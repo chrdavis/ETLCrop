@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="ETWCrop.App/ETWCrop.App.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
+  <Project Path="ETWCrop.Cli/ETWCrop.Cli.csproj" />
+  <Project Path="ETWCrop.Tests/ETWCrop.Tests.csproj" />
+  <Project Path="ETWCrop/ETWCrop.csproj" />
+</Solution>
