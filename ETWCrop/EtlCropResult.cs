@@ -23,6 +23,12 @@ public sealed class EtlCropResult
     /// </summary>
     public long MetadataEventsKept { get; init; }
 
+    /// <summary>
+    /// Number of kept rundown events that were re-timed to the stop time so that the cropped
+    /// trace's end matches the requested window (see <see cref="EtlCropOptions.ClampKeptEventsToWindow"/>).
+    /// </summary>
+    public long EventsRetimed { get; init; }
+
     /// <summary>Wall-clock time taken to perform the crop.</summary>
     public TimeSpan Elapsed { get; init; }
 
@@ -31,6 +37,15 @@ public sealed class EtlCropResult
 
     /// <summary>The end of the applied time window, in milliseconds relative to session start.</summary>
     public double StopTimeRelativeMSec { get; init; }
+
+    /// <summary>
+    /// Number of DPC/ISR events in a rebased output whose embedded "initial time" was left
+    /// inconsistent with the shifted event time. This is a post-crop safety check: any non-zero
+    /// value indicates a rebased trace that Windows Performance Analyzer would reject with a
+    /// catastrophic failure (0x8000FFFF), and is expected to be zero for a correct crop. It is always
+    /// zero when rebasing is disabled.
+    /// </summary>
+    public int EmbeddedTimestampAnomalies { get; init; }
 
     /// <summary>Number of events that were dropped because they fell outside the time window.</summary>
     public long EventsDropped => EventsRead - EventsWritten;

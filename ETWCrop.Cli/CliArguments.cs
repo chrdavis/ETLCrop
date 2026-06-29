@@ -26,6 +26,12 @@ public sealed class CliArguments
     /// <summary>Whether process/thread/image metadata is preserved to keep stacks valid.</summary>
     public bool KeepMetadata { get; set; } = true;
 
+    /// <summary>Whether kept end-of-trace rundown is re-timed so the trace ends at the stop time.</summary>
+    public bool ClampToWindow { get; set; } = true;
+
+    /// <summary>Whether the cropped trace is shifted so the start time becomes zero (trim leading time).</summary>
+    public bool Rebase { get; set; }
+
     /// <summary>Whether usage/help was requested or no arguments were supplied.</summary>
     public bool ShowHelp { get; set; }
 
@@ -87,6 +93,22 @@ public sealed class CliArguments
 
                 case "--no-metadata":
                     result.KeepMetadata = false;
+                    break;
+
+                case "--clamp":
+                    result.ClampToWindow = true;
+                    break;
+
+                case "--no-clamp":
+                    result.ClampToWindow = false;
+                    break;
+
+                case "--rebase":
+                    result.Rebase = true;
+                    break;
+
+                case "--no-rebase":
+                    result.Rebase = false;
                     break;
 
                 default:
@@ -160,6 +182,8 @@ public sealed class CliArguments
         StartTimeRelativeMSec = StartMSec,
         StopTimeRelativeMSec = StopMSec,
         KeepMetadataEvents = KeepMetadata,
+        ClampKeptEventsToWindow = ClampToWindow,
+        RebaseToWindowStart = Rebase,
     };
 
     private static string? TakeValue(string[] args, ref int i, string option, CliArguments result)

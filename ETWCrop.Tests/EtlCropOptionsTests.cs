@@ -13,6 +13,8 @@ public class EtlCropOptionsTests
         Assert.Equal(0, options.StartTimeRelativeMSec);
         Assert.Equal(double.PositiveInfinity, options.StopTimeRelativeMSec);
         Assert.True(options.KeepMetadataEvents);
+        Assert.True(options.ClampKeptEventsToWindow);
+        Assert.False(options.RebaseToWindowStart);
     }
 
     [Fact]

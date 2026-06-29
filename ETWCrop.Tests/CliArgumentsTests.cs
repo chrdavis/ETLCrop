@@ -87,6 +87,40 @@ public class CliArgumentsTests
     }
 
     [Fact]
+    public void Parse_DefaultClamp_IsTrue()
+    {
+        CliArguments result = CliArguments.Parse(["in.etl", "out.etl"]);
+
+        Assert.True(result.ClampToWindow);
+    }
+
+    [Fact]
+    public void Parse_NoClampFlag_DisablesClamp()
+    {
+        CliArguments result = CliArguments.Parse(["in.etl", "out.etl", "--no-clamp"]);
+
+        Assert.False(result.HasErrors);
+        Assert.False(result.ClampToWindow);
+    }
+
+    [Fact]
+    public void Parse_DefaultRebase_IsFalse()
+    {
+        CliArguments result = CliArguments.Parse(["in.etl", "out.etl"]);
+
+        Assert.False(result.Rebase);
+    }
+
+    [Fact]
+    public void Parse_RebaseFlag_EnablesRebase()
+    {
+        CliArguments result = CliArguments.Parse(["in.etl", "out.etl", "--rebase"]);
+
+        Assert.False(result.HasErrors);
+        Assert.True(result.Rebase);
+    }
+
+    [Fact]
     public void Parse_MissingInput_ReportsError()
     {
         CliArguments result = CliArguments.Parse(["--output", "out.etl"]);
@@ -143,12 +177,14 @@ public class CliArgumentsTests
     public void ToCropOptions_MapsAllValues()
     {
         CliArguments result = CliArguments.Parse(
-            ["-i", "in.etl", "-o", "out.etl", "--start", "100", "--stop", "500", "--no-metadata"]);
+            ["-i", "in.etl", "-o", "out.etl", "--start", "100", "--stop", "500", "--no-metadata", "--no-clamp", "--no-rebase"]);
 
         EtlCropOptions options = result.ToCropOptions();
 
         Assert.Equal(100, options.StartTimeRelativeMSec);
         Assert.Equal(500, options.StopTimeRelativeMSec);
         Assert.False(options.KeepMetadataEvents);
+        Assert.False(options.ClampKeptEventsToWindow);
+        Assert.False(options.RebaseToWindowStart);
     }
 }

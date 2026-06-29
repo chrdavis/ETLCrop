@@ -1,0 +1,191 @@
+# ETWCrop
+
+Crop an existing Event Tracing for Windows (ETW) `.etl` trace to a specific time window,
+producing a smaller, **valid** `.etl` file that still opens correctly in
+[Windows Performance Analyzer (WPA)](https://learn.microsoft.com/windows-hardware/test/wpt/windows-performance-analyzer)
+and PerfView — with CPU and memory **stacks intact**.
+
+Large ETW captures are often gigabytes in size, but the interesting behavior usually
+happens in a few seconds. ETWCrop lets you keep just that slice so the trace loads faster
+and is easier to share, without losing the metadata that makes sampled-profile and
+allocation stacks resolvable.
+
+> Reading and re-logging an existing `.etl` file does **not** require administrator rights.
+> Elevation is only needed to control *live* ETW sessions, which ETWCrop never does.
+
+---
+
+## Highlights
+
+- **Stacks stay valid.** Process/thread/image rundown, stack-key definitions, and the
+  one-time trace-setup records WPA needs are always preserved, so CPU-sampling and memory
+  stacks still resolve in the cropped trace.
+- **Lossless event copy.** Events are re-logged verbatim through the native ETW relogger,
+  so nothing about the kept events is reinterpreted or downgraded.
+- **Optional trimming (rebase).** Shift the window so it starts at time zero, removing the
+  empty leading gap. Embedded absolute timestamps (DPC/ISR/registry/etc.) are shifted too,
+  so the rebased trace remains internally consistent and WPA-safe.
+- **Three ways to use it:** a reusable library, a console tool, and a WPF desktop app.
+
+---
+
+## Repository layout
+
+| Project | Output | Purpose |
+| --- | --- | --- |
+| [`ETWCrop`](ETWCrop) | library | Core cropping engine (`EtlCropper`) and options/result types. |
+| [`ETWCrop.Cli`](ETWCrop.Cli) | `etlcrop.exe` | Command-line interface. |
+| [`ETWCrop.App`](ETWCrop.App) | `ETWCrop.App.exe` | WPF desktop UI. |
+| [`ETWCrop.Tests`](ETWCrop.Tests) | xUnit tests | Unit tests for the pure decision logic and CLI parsing. |
+
+All projects target **.NET 10** (`net10.0-windows`) and depend on
+[`Microsoft.Diagnostics.Tracing.TraceEvent`](https://www.nuget.org/packages/Microsoft.Diagnostics.Tracing.TraceEvent)
+3.2.4. The relogger and WPF UI are Windows-only.
+
+For the internal architecture and the tricky details (why metadata is kept, how rebasing
+shifts embedded timestamps, how end-of-trace re-timing works), see [DESIGN.md](DESIGN.md).
+
+---
+
+## Building
+
+```pwsh
+dotnet build ETWCrop.slnx -c Release
+```
+
+Run the tests:
+
+```pwsh
+dotnet test ETWCrop.slnx
+```
+
+---
+
+## Command-line tool (`etlcrop`)
+
+```text
+etlcrop --input <in.etl> --output <out.etl> [--start <ms>] [--stop <ms>] [options]
+etlcrop <in.etl> <out.etl> [options]
+```
+
+Times are **milliseconds relative to the start of the trace** — the same timeline PerfView
+and WPA show.
+
+| Option | Description |
+| --- | --- |
+| `-i`, `--input <path>` | Source `.etl` file to crop (required). |
+| `-o`, `--output <path>` | Destination `.etl` file to create (required, must differ from input). |
+| `-s`, `--start <ms>` | Window start, in ms relative to trace start. Default: `0`. |
+| `-e`, `--stop <ms>` | Window stop, in ms relative to trace start. Default: end of trace. |
+| `--keep-metadata` | Keep process/thread/module events so stacks stay valid *(default)*. |
+| `--no-metadata` | Drop process/thread/module events outside the window. |
+| `--clamp` | End the cropped trace at the stop time by re-timing end rundown *(default)*. |
+| `--no-clamp` | Leave end-of-trace rundown at its original time (output keeps original length). |
+| `--rebase` | Trim leading time by shifting the window to start at zero (WPA-compatible). |
+| `--no-rebase` | Keep original absolute timestamps with a leading gap *(default)*. |
+| `-h`, `--help` | Show help. |
+
+### Examples
+
+Keep the slice from 1.0 s to 2.0 s:
+
+```pwsh
+etlcrop -i big.etl -o slice.etl --start 1000 --stop 2000
+```
+
+Same window, but trimmed so the output starts at time zero:
+
+```pwsh
+etlcrop -i big.etl -o slice.etl -s 1000 -e 2000 --rebase
+```
+
+### Exit codes
+
+| Code | Meaning |
+| --- | --- |
+| `0` | Success. |
+| `1` | Invalid arguments. |
+| `2` | The crop failed (an exception was thrown). |
+| `3` | The crop produced a rebased trace with inconsistent embedded timestamps (see warning). |
+
+---
+
+## Desktop app (`ETWCrop.App`)
+
+A WPF front end over the same library. Features:
+
+- **Browse or drag-and-drop** an `.etl` file as the input.
+- The trace **duration is read up front** (from the header, in milliseconds even for
+  multi-gigabyte files), so the time window can be chosen precisely.
+- A **dual-thumb range slider** plus Start/Stop text boxes, kept in sync, select the window.
+- The same option checkboxes as the CLI: keep metadata, clamp to stop time, rebase/trim.
+- **Overwrite confirmation** before replacing an existing output file.
+- A **determinate progress bar** with percentage, driven by event time vs. total duration.
+- The crop runs on a **background thread** and can be **cancelled** without closing the app.
+
+---
+
+## Library (`ETWCrop`)
+
+```csharp
+using ETWCrop;
+
+var options = new EtlCropOptions
+{
+	StartTimeRelativeMSec = 1000,   // 1.0 s
+	StopTimeRelativeMSec  = 2000,   // 2.0 s
+	KeepMetadataEvents    = true,   // keep stacks resolvable (default)
+	ClampKeptEventsToWindow = true, // end the output at the stop time (default)
+	RebaseToWindowStart   = false,  // keep absolute timestamps (default)
+};
+
+var cropper = new EtlCropper();
+EtlCropResult result = cropper.Crop("big.etl", "slice.etl", options);
+
+Console.WriteLine($"Wrote {result.EventsWritten:N0} of {result.EventsRead:N0} events.");
+```
+
+Read a trace's timing without a full pass (useful for sizing a window):
+
+```csharp
+EtlTraceInfo info = EtlCropper.ReadTraceInfo("big.etl");
+Console.WriteLine($"Duration: {info.SessionDurationText()}");
+```
+
+`Crop` also accepts an `IProgress<EtlCropProgress>` and a `CancellationToken` for
+long-running operations.
+
+### Key types
+
+| Type | Role |
+| --- | --- |
+| `EtlCropper` | The cropping engine: `Crop(...)` and the static `ReadTraceInfo(...)`. |
+| `EtlCropOptions` | Time window and metadata/clamp/rebase behavior; `Validate()`. |
+| `EtlCropResult` | Summary of a completed crop (counts, elapsed time, anomaly check). |
+| `EtlCropProgress` | Progress snapshot (`EventsRead`, `EventsWritten`, `PercentComplete`). |
+| `EtlTraceInfo` | Header-only trace timing (duration, session start/end, events lost). |
+| `EtlCropFilter` | Pure, unit-testable "should this event be kept?" decision logic. |
+
+---
+
+## How it works (in brief)
+
+ETWCrop uses TraceEvent's `ETWReloggerTraceEventSource` to read the input trace and write a
+new one, copying through only the events that fall in the requested window — plus the
+metadata/rundown events needed to keep stacks valid regardless of the window. Optional
+re-timing trims the output to end at the stop time, and optional rebasing shifts the whole
+window to start at zero (carefully fixing up the absolute timestamps that some kernel events
+embed in their payload).
+
+The full rationale and the edge cases are documented in **[DESIGN.md](DESIGN.md)**.
+
+---
+
+## Limitations
+
+- Windows-only (the ETW relogger and WPF UI require Windows).
+- Rebasing pins the output's **start** to the original session start; rebasing instead trims
+  the leading gap by shifting events. The output header's start time itself is not moved.
+- The embedded-timestamp fix-up covers the known kernel events that carry absolute QPC values
+  (stack walks, DPC/ISR, memory hard faults, registry v2, last-branch). A post-crop check
+  reports if any DPC/ISR event was left inconsistent.
