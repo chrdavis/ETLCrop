@@ -1,7 +1,14 @@
 <Application x:Class="ETWCrop.App.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="MainWindow.xaml">
+             Startup="App_Startup">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Default (light) theme; ThemeManager swaps these at startup to match Windows. -->
+                <ResourceDictionary Source="Themes/LightColors.xaml" />
+                <ResourceDictionary Source="Themes/BaseStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

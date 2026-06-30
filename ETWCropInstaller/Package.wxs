@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+
+  <Package Name="ETWCrop" Manufacturer="ETWCrop" Version="1.0.0" UpgradeCode="E93B003F-0AA2-46FC-8E45-06833918A37B" InstallerVersion="500">
+	<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+	<MediaTemplate EmbedCab="yes" />
+
+	<!-- Application icon for Add/Remove Programs -->
+	<Icon Id="ETLCrop.ico" SourceFile="$(var.ETWCrop.App.ProjectDir)ETLCrop.ico" />
+	<Property Id="ARPPRODUCTICON" Value="ETLCrop.ico" />
+
+	<Feature Id="Main">
+	  <ComponentGroupRef Id="ProductComponents" />
+	  <ComponentRef Id="ProgramMenuShortcut" />
+	</Feature>
+
+	<!-- UI with welcome screen, install directory selection, and completion dialog -->
+	<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+	<WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
+	<WixVariable Id="WixUIDialogBmp" Value="dialog.bmp" />
+	<ui:WixUI Id="WixUI_InstallDir" />
+
+	<!-- Skip the license agreement dialog -->
+	<UI>
+	  <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="2" Condition="1" />
+	  <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2" Condition="1" />
+	</UI>
+  </Package>
+
+  <Fragment>
+	<StandardDirectory Id="ProgramFiles6432Folder">
+	  <Directory Id="INSTALLFOLDER" Name="ETWCrop" />
+	</StandardDirectory>
+  </Fragment>
+
+  <Fragment>
+	<StandardDirectory Id="ProgramMenuFolder">
+	  <Directory Id="ApplicationProgramsFolder" Name="ETWCrop" />
+	</StandardDirectory>
+  </Fragment>
+
+  <Fragment>
+	<!-- Harvest every file the WPF app produces (exe + all dependency DLLs and runtime config),
+		 so the installed app is self-contained without hand-listing each assembly. -->
+	<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+	  <Files Include="$(var.ETWCrop.App.TargetDir)**" />
+	</ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+	<Component Id="ProgramMenuShortcut" Guid="21B6812A-E613-4E9E-994D-1A1987DD1079" Directory="ApplicationProgramsFolder">
+	  <Shortcut Id="ApplicationStartMenuShortcut"
+				Name="ETWCrop"
+				Description="Crop an ETL trace to a time window"
+				Target="[INSTALLFOLDER]ETWCrop.App.exe"
+				WorkingDirectory="INSTALLFOLDER" />
+	  <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall" />
+	  <RegistryValue Root="HKCU" Key="Software\ETWCrop" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+	</Component>
+  </Fragment>
+
+</Wix>

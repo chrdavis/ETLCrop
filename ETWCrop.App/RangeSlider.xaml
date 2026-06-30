@@ -4,20 +4,22 @@
              Height="24" MinWidth="80" Loaded="RangeSlider_Loaded">
     <Grid>
         <!-- Full track. -->
-        <Border Height="4" VerticalAlignment="Center" CornerRadius="2" Background="#D0D0D0" />
+        <Border Height="4" VerticalAlignment="Center" CornerRadius="2"
+                Background="{DynamicResource TrackBrush}" />
 
         <!-- Thumbs and the highlighted selected range live on a canvas so they can be positioned
              precisely from code based on the control's measured width. -->
         <Canvas x:Name="TrackCanvas" Background="Transparent" ClipToBounds="False"
                 SizeChanged="TrackCanvas_SizeChanged">
             <Border x:Name="SelectedRange" Height="4" Canvas.Top="10" CornerRadius="2"
-                    Background="#0078D4" IsHitTestVisible="False" />
+                    Background="{DynamicResource AccentBrush}" IsHitTestVisible="False" />
 
             <Thumb x:Name="LowerThumb" Width="12" Height="18" Canvas.Top="3" Cursor="SizeWE"
                    ToolTip="Drag to set the window start" DragDelta="LowerThumb_DragDelta">
                 <Thumb.Template>
                     <ControlTemplate TargetType="Thumb">
-                        <Border Background="White" BorderBrush="#0078D4" BorderThickness="2" CornerRadius="3" />
+                        <Border Background="{DynamicResource ThumbBackgroundBrush}"
+                                BorderBrush="{DynamicResource AccentBrush}" BorderThickness="2" CornerRadius="3" />
                     </ControlTemplate>
                 </Thumb.Template>
             </Thumb>
@@ -26,7 +28,8 @@
                    ToolTip="Drag to set the window stop" DragDelta="UpperThumb_DragDelta">
                 <Thumb.Template>
                     <ControlTemplate TargetType="Thumb">
-                        <Border Background="White" BorderBrush="#0078D4" BorderThickness="2" CornerRadius="3" />
+                        <Border Background="{DynamicResource ThumbBackgroundBrush}"
+                                BorderBrush="{DynamicResource AccentBrush}" BorderThickness="2" CornerRadius="3" />
                     </ControlTemplate>
                 </Thumb.Template>
             </Thumb>

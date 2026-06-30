@@ -7,6 +7,7 @@
 	<Nullable>enable</Nullable>
 	<RootNamespace>ETWCrop.Cli</RootNamespace>
 	<AssemblyName>etlcrop</AssemblyName>
+	<ApplicationIcon>ETLCrop.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

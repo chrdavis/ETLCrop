@@ -2,7 +2,6 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using ETWCrop;
 using Microsoft.Win32;
 
@@ -473,6 +472,7 @@ public partial class MainWindow : Window
     private void SetStatus(string message, bool isError)
     {
         StatusText.Text = message;
-        StatusText.Foreground = isError ? Brushes.Firebrick : Brushes.Black;
+        string brushKey = isError ? "ErrorBrush" : "PrimaryForegroundBrush";
+        StatusText.SetResourceReference(TextBlock.ForegroundProperty, brushKey);
     }
 }
