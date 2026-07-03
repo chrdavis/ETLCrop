@@ -5,15 +5,16 @@ producing a smaller, **valid** `.etl` file that still opens correctly in
 [Windows Performance Analyzer (WPA)](https://learn.microsoft.com/windows-hardware/test/wpt/windows-performance-analyzer)
 and PerfView — with CPU and memory **stacks intact**.
 
-Large ETW captures are often gigabytes in size, but the interesting behavior usually
+Large ETW captures are often minutes long and gigabytes in size, but the interesting behavior usually
 happens in a few seconds. ETLCrop lets you keep just that slice so the trace loads faster
 and is easier to share, without losing the metadata that makes sampled-profile and
 allocation stacks resolvable.
 
+<img width="1298" height="1029" alt="ETWCrop screenshot" src="https://github.com/user-attachments/assets/dcb49dd0-aaa2-456c-ad1b-27e71ff4b7c5" />
+
+
 > Reading and re-logging an existing `.etl` file does **not** require administrator rights.
 > Elevation is only needed to control *live* ETW sessions, which ETLCrop never does.
-
-<img width="1298" height="1029" alt="ETWCrop screenshot" src="https://github.com/user-attachments/assets/dcb49dd0-aaa2-456c-ad1b-27e71ff4b7c5" />
 
 ---
 
