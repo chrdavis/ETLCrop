@@ -1,4 +1,4 @@
-# Generates the WiX UI bitmaps (banner.bmp 493x58, dialog.bmp 493x312) for the ETWCrop
+# Generates the WiX UI bitmaps (banner.bmp 493x58, dialog.bmp 493x312) for the ETLCrop
 # installer. The artwork composites the real application icon (ETLCrop.ico) onto a blue
 # gradient so the installer always matches the app's branding exactly.
 
@@ -74,7 +74,7 @@ function New-Bmp([int]$w, [int]$h, [string]$path, [bool]$banner) {
 	Write-Host "Wrote $path ($w x $h)."
 }
 
-New-Bmp 493 58  (Join-Path $PSScriptRoot '..\ETWCropInstaller\banner.bmp') $true
-New-Bmp 493 312 (Join-Path $PSScriptRoot '..\ETWCropInstaller\dialog.bmp') $false
+New-Bmp 493 58  (Join-Path $PSScriptRoot '..\ETLCropInstaller\banner.bmp') $true
+New-Bmp 493 312 (Join-Path $PSScriptRoot '..\ETLCropInstaller\dialog.bmp') $false
 
 $iconBmp.Dispose()

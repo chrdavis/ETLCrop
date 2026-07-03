@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Interop;
 using Microsoft.Win32;
 
-namespace ETWCrop.App;
+namespace ETLCrop.App;
 
 /// <summary>
 /// Applies a light or dark theme to the application by swapping the merged color dictionary, and

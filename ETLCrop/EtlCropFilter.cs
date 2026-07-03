@@ -1,4 +1,4 @@
-namespace ETWCrop;
+namespace ETLCrop;
 
 /// <summary>
 /// Pure, side-effect-free decision logic that determines whether a single trace event

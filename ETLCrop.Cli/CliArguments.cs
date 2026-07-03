@@ -1,7 +1,7 @@
 using System.Globalization;
-using ETWCrop;
+using ETLCrop;
 
-namespace ETWCrop.Cli;
+namespace ETLCrop.Cli;
 
 /// <summary>
 /// Parsed command-line arguments for the <c>etlcrop</c> tool.

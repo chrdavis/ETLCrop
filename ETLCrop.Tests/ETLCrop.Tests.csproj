@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\ETWCrop\ETWCrop.csproj" />
-	<ProjectReference Include="..\ETWCrop.Cli\ETWCrop.Cli.csproj" />
+	<ProjectReference Include="..\ETLCrop\ETLCrop.csproj" />
+	<ProjectReference Include="..\ETLCrop.Cli\ETLCrop.Cli.csproj" />
   </ItemGroup>
 
 </Project>

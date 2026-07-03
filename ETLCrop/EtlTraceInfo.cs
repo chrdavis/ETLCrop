@@ -1,4 +1,4 @@
-namespace ETWCrop;
+namespace ETLCrop;
 
 /// <summary>
 /// Lightweight summary of an ETL trace's timing, read from the trace header without a full pass

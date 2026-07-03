@@ -6,8 +6,8 @@
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
 	<UseWPF>true</UseWPF>
-	<RootNamespace>ETWCrop.App</RootNamespace>
-	<AssemblyName>ETWCrop.App</AssemblyName>
+	<RootNamespace>ETLCrop.App</RootNamespace>
+	<AssemblyName>ETLCrop.App</AssemblyName>
 	<ApplicationManifest>app.manifest</ApplicationManifest>
 	<ApplicationIcon>ETLCrop.ico</ApplicationIcon>
   </PropertyGroup>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\ETWCrop\ETWCrop.csproj" />
+	<ProjectReference Include="..\ETLCrop\ETLCrop.csproj" />
   </ItemGroup>
 
 </Project>

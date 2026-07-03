@@ -5,17 +5,11 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="ETWCrop.App/ETWCrop.App.csproj">
-    <Build Solution="Debug|Any CPU" Project="false" />
-  </Project>
-  <Project Path="ETWCrop.Cli/ETWCrop.Cli.csproj" />
-  <Project Path="ETWCrop.Tests/ETWCrop.Tests.csproj" />
-  <Project Path="ETWCrop/ETWCrop.csproj" />
-  <Project Path="ETWCropInstaller/ETWCropInstaller.wixproj">
-    <Platform Solution="Release|Any CPU" Project="x64" />
-    <Build Solution="*|ARM64" />
-    <Build Solution="*|x64" />
-    <Build Solution="*|x86" />
-    <Build Solution="Release|Any CPU" />
+  <Project Path="ETLCrop.App/ETLCrop.App.csproj" />
+  <Project Path="ETLCrop.Cli/ETLCrop.Cli.csproj" />
+  <Project Path="ETLCrop.Tests/ETLCrop.Tests.csproj" />
+  <Project Path="ETLCrop/ETLCrop.csproj" />
+  <Project Path="ETLCropInstaller/ETLCropInstaller.wixproj" Type="b7dd6f7e-def8-4e67-b5b7-07ef123db6f0">
+    <Platform Solution="*|Any CPU" Project="x64" />
   </Project>
 </Solution>

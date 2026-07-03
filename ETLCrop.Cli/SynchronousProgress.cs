@@ -1,4 +1,4 @@
-namespace ETWCrop.Cli;
+namespace ETLCrop.Cli;
 
 /// <summary>
 /// An <see cref="IProgress{T}"/> that invokes its callback synchronously on the calling thread,

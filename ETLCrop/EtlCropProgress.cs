@@ -1,4 +1,4 @@
-namespace ETWCrop;
+namespace ETLCrop;
 
 /// <summary>
 /// Progress information reported while a crop operation runs.

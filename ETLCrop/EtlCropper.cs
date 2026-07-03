@@ -4,7 +4,7 @@ using Microsoft.Diagnostics.Tracing;
 using Microsoft.Diagnostics.Tracing.Parsers;
 using Microsoft.Diagnostics.Tracing.Parsers.Kernel;
 
-namespace ETWCrop;
+namespace ETLCrop;
 
 /// <summary>
 /// Crops an existing ETL trace file to a time window, producing a new, valid ETL file.

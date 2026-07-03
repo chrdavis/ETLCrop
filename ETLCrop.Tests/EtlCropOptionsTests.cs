@@ -1,7 +1,7 @@
-using ETWCrop;
+using ETLCrop;
 using Xunit;
 
-namespace ETWCrop.Tests;
+namespace ETLCrop.Tests;
 
 public class EtlCropOptionsTests
 {

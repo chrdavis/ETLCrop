@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace ETWCrop.App;
+namespace ETLCrop.App;
 
 /// <summary>
 /// Interaction logic for App.xaml.

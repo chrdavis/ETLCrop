@@ -1,4 +1,4 @@
-namespace ETWCrop;
+namespace ETLCrop;
 
 /// <summary>
 /// Summary information about a completed crop operation.

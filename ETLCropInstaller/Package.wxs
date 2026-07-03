@@ -2,12 +2,12 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
 	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
 
-  <Package Name="ETWCrop" Manufacturer="ETWCrop" Version="1.0.0" UpgradeCode="E93B003F-0AA2-46FC-8E45-06833918A37B" InstallerVersion="500">
+  <Package Name="ETLCrop" Manufacturer="ETLCrop" Version="1.0.0" UpgradeCode="E93B003F-0AA2-46FC-8E45-06833918A37B" InstallerVersion="500">
 	<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 	<MediaTemplate EmbedCab="yes" />
 
 	<!-- Application icon for Add/Remove Programs -->
-	<Icon Id="ETLCrop.ico" SourceFile="$(var.ETWCrop.App.ProjectDir)ETLCrop.ico" />
+	<Icon Id="ETLCrop.ico" SourceFile="$(var.ETLCrop.App.ProjectDir)ETLCrop.ico" />
 	<Property Id="ARPPRODUCTICON" Value="ETLCrop.ico" />
 
 	<Feature Id="Main">
@@ -30,13 +30,13 @@
 
   <Fragment>
 	<StandardDirectory Id="ProgramFiles6432Folder">
-	  <Directory Id="INSTALLFOLDER" Name="ETWCrop" />
+	  <Directory Id="INSTALLFOLDER" Name="ETLCrop" />
 	</StandardDirectory>
   </Fragment>
 
   <Fragment>
 	<StandardDirectory Id="ProgramMenuFolder">
-	  <Directory Id="ApplicationProgramsFolder" Name="ETWCrop" />
+	  <Directory Id="ApplicationProgramsFolder" Name="ETLCrop" />
 	</StandardDirectory>
   </Fragment>
 
@@ -44,19 +44,19 @@
 	<!-- Harvest every file the WPF app produces (exe + all dependency DLLs and runtime config),
 		 so the installed app is self-contained without hand-listing each assembly. -->
 	<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-	  <Files Include="$(var.ETWCrop.App.TargetDir)**" />
+	  <Files Include="$(var.ETLCrop.App.TargetDir)**" />
 	</ComponentGroup>
   </Fragment>
 
   <Fragment>
 	<Component Id="ProgramMenuShortcut" Guid="21B6812A-E613-4E9E-994D-1A1987DD1079" Directory="ApplicationProgramsFolder">
 	  <Shortcut Id="ApplicationStartMenuShortcut"
-				Name="ETWCrop"
+				Name="ETLCrop"
 				Description="Crop an ETL trace to a time window"
-				Target="[INSTALLFOLDER]ETWCrop.App.exe"
+				Target="[INSTALLFOLDER]ETLCrop.App.exe"
 				WorkingDirectory="INSTALLFOLDER" />
 	  <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall" />
-	  <RegistryValue Root="HKCU" Key="Software\ETWCrop" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+	  <RegistryValue Root="HKCU" Key="Software\ETLCrop" Name="installed" Type="integer" Value="1" KeyPath="yes" />
 	</Component>
   </Fragment>
 

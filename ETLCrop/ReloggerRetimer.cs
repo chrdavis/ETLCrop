@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Diagnostics.Tracing;
 
-namespace ETWCrop;
+namespace ETLCrop;
 
 /// <summary>
 /// Rewrites the timestamp of the event currently being passed through an

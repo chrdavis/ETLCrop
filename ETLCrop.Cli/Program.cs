@@ -1,6 +1,6 @@
 using System.Globalization;
-using ETWCrop;
-using ETWCrop.Cli;
+using ETLCrop;
+using ETLCrop.Cli;
 
 CliArguments parsed = CliArguments.Parse(args);
 
@@ -54,7 +54,7 @@ try
         Console.Error.WriteLine($"WARNING: {result.EmbeddedTimestampAnomalies:N0} DPC/ISR events in the rebased output have");
         Console.Error.WriteLine("inconsistent embedded timestamps. Windows Performance Analyzer will reject this");
         Console.Error.WriteLine("trace with a catastrophic failure (0x8000FFFF). This usually means a stale build -");
-        Console.Error.WriteLine("rebuild ETWCrop and re-run the crop. If it persists, report this output.");
+        Console.Error.WriteLine("rebuild ETLCrop and re-run the crop. If it persists, report this output.");
         return 3;
     }
 

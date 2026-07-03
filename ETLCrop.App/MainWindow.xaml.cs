@@ -2,10 +2,10 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using ETWCrop;
+using ETLCrop;
 using Microsoft.Win32;
 
-namespace ETWCrop.App;
+namespace ETLCrop.App;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml.
@@ -357,7 +357,7 @@ public partial class MainWindow : Window
                 SetStatus(
                     $"Warning: {result.EmbeddedTimestampAnomalies:N0} DPC/ISR events in the rebased output have " +
                     $"inconsistent embedded timestamps, so Windows Performance Analyzer will reject it " +
-                    $"(0x8000FFFF). This usually means a stale build - rebuild ETWCrop and crop again." +
+                    $"(0x8000FFFF). This usually means a stale build - rebuild ETLCrop and crop again." +
                     $"{Environment.NewLine}Output: {result.OutputPath}",
                     isError: true);
                 return;

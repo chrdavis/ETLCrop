@@ -1,8 +1,8 @@
-using ETWCrop;
-using ETWCrop.Cli;
+using ETLCrop;
+using ETLCrop.Cli;
 using Xunit;
 
-namespace ETWCrop.Tests;
+namespace ETLCrop.Tests;
 
 public class CliArgumentsTests
 {

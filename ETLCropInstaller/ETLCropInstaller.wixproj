@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\ETWCrop.App\ETWCrop.App.csproj" />
+	<ProjectReference Include="..\ETLCrop.App\ETLCrop.App.csproj" />
   </ItemGroup>
 
   <ItemGroup>

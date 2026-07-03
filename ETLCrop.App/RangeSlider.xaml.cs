@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
-namespace ETWCrop.App;
+namespace ETLCrop.App;
 
 /// <summary>
 /// A horizontal slider with two thumbs that select a lower and upper value within

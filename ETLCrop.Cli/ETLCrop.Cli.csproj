@@ -5,13 +5,13 @@
 	<TargetFramework>net10.0-windows</TargetFramework>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
-	<RootNamespace>ETWCrop.Cli</RootNamespace>
+	<RootNamespace>ETLCrop.Cli</RootNamespace>
 	<AssemblyName>etlcrop</AssemblyName>
 	<ApplicationIcon>ETLCrop.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\ETWCrop\ETWCrop.csproj" />
+	<ProjectReference Include="..\ETLCrop\ETLCrop.csproj" />
   </ItemGroup>
 
 </Project>

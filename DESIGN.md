@@ -1,6 +1,6 @@
-# ETWCrop — Design
+# ETLCrop — Design
 
-This document explains how ETWCrop crops an ETW `.etl` trace while keeping it valid for
+This document explains how ETLCrop crops an ETW `.etl` trace while keeping it valid for
 Windows Performance Analyzer (WPA) and PerfView, and records the non-obvious details that
 make that possible. For usage, see [README.md](README.md).
 
@@ -24,7 +24,7 @@ trace-setup records that stacks depend on.
 
 ## High-level approach
 
-ETWCrop is built on TraceEvent's **`ETWReloggerTraceEventSource`**, which reads an input
+ETLCrop is built on TraceEvent's **`ETWReloggerTraceEventSource`**, which reads an input
 `.etl` and writes a new `.etl`, raising a callback per event. For each event we decide
 whether to **copy it through verbatim** (`relogger.WriteEvent(data)`) or drop it. Because
 kept events are copied raw, nothing about them is reinterpreted — a kept stack-walk event is
@@ -42,9 +42,9 @@ The pipeline has three cooperating pieces:
 
 | Piece | File | Responsibility |
 | --- | --- | --- |
-| Decision logic | [`EtlCropFilter`](ETWCrop/EtlCropFilter.cs) | Pure "should this event be kept?" — unit tested. |
-| Driver | [`EtlCropper`](ETWCrop/EtlCropper.cs) | Runs the relogger, classifies events, applies re-timing/rebasing. |
-| Timestamp rewriter | [`ReloggerRetimer`](ETWCrop/ReloggerRetimer.cs) | Reflection/COM helper to change an event's timestamp and embedded payload timestamps. |
+| Decision logic | [`EtlCropFilter`](ETLCrop/EtlCropFilter.cs) | Pure "should this event be kept?" — unit tested. |
+| Driver | [`EtlCropper`](ETLCrop/EtlCropper.cs) | Runs the relogger, classifies events, applies re-timing/rebasing. |
+| Timestamp rewriter | [`ReloggerRetimer`](ETLCrop/ReloggerRetimer.cs) | Reflection/COM helper to change an event's timestamp and embedded payload timestamps. |
 
 ---
 
@@ -259,13 +259,13 @@ to confirm stacks survive and the `0x8000FFFF` failure does not occur.
 
 | File | Summary |
 | --- | --- |
-| [`ETWCrop/EtlCropper.cs`](ETWCrop/EtlCropper.cs) | Crop driver, event classification, metadata/rebase rules, post-crop check, `ReadTraceInfo`. |
-| [`ETWCrop/EtlCropFilter.cs`](ETWCrop/EtlCropFilter.cs) | Pure keep/drop decision. |
-| [`ETWCrop/EtlCropOptions.cs`](ETWCrop/EtlCropOptions.cs) | Window + metadata/clamp/rebase options and validation. |
-| [`ETWCrop/EtlCropResult.cs`](ETWCrop/EtlCropResult.cs) | Crop summary, including the anomaly count. |
-| [`ETWCrop/EtlCropProgress.cs`](ETWCrop/EtlCropProgress.cs) | Progress snapshot with `PercentComplete`. |
-| [`ETWCrop/EtlTraceInfo.cs`](ETWCrop/EtlTraceInfo.cs) | Header-only trace timing. |
-| [`ETWCrop/ReloggerRetimer.cs`](ETWCrop/ReloggerRetimer.cs) | Reflection/COM timestamp rewriter (clamp + rebase, incl. embedded). |
-| [`ETWCrop.Cli/Program.cs`](ETWCrop.Cli/Program.cs) | CLI entry point, output, exit codes. |
-| [`ETWCrop.Cli/CliArguments.cs`](ETWCrop.Cli/CliArguments.cs) | Argument parsing and mapping to `EtlCropOptions`. |
-| [`ETWCrop.App`](ETWCrop.App) | WPF UI (drag-drop, range slider, progress, cancellation). |
+| [`ETLCrop/EtlCropper.cs`](ETLCrop/EtlCropper.cs) | Crop driver, event classification, metadata/rebase rules, post-crop check, `ReadTraceInfo`. |
+| [`ETLCrop/EtlCropFilter.cs`](ETLCrop/EtlCropFilter.cs) | Pure keep/drop decision. |
+| [`ETLCrop/EtlCropOptions.cs`](ETLCrop/EtlCropOptions.cs) | Window + metadata/clamp/rebase options and validation. |
+| [`ETLCrop/EtlCropResult.cs`](ETLCrop/EtlCropResult.cs) | Crop summary, including the anomaly count. |
+| [`ETLCrop/EtlCropProgress.cs`](ETLCrop/EtlCropProgress.cs) | Progress snapshot with `PercentComplete`. |
+| [`ETLCrop/EtlTraceInfo.cs`](ETLCrop/EtlTraceInfo.cs) | Header-only trace timing. |
+| [`ETLCrop/ReloggerRetimer.cs`](ETLCrop/ReloggerRetimer.cs) | Reflection/COM timestamp rewriter (clamp + rebase, incl. embedded). |
+| [`ETLCrop.Cli/Program.cs`](ETLCrop.Cli/Program.cs) | CLI entry point, output, exit codes. |
+| [`ETLCrop.Cli/CliArguments.cs`](ETLCrop.Cli/CliArguments.cs) | Argument parsing and mapping to `EtlCropOptions`. |
+| [`ETLCrop.App`](ETLCrop.App) | WPF UI (drag-drop, range slider, progress, cancellation). |

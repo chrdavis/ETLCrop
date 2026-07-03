@@ -1,4 +1,4 @@
-namespace ETWCrop;
+namespace ETLCrop;
 
 /// <summary>
 /// Options that control how an ETL trace file is cropped to a time window.
