@@ -13,6 +13,8 @@ allocation stacks resolvable.
 > Reading and re-logging an existing `.etl` file does **not** require administrator rights.
 > Elevation is only needed to control *live* ETW sessions, which ETLCrop never does.
 
+<img width="1298" height="1029" alt="ETWCrop screenshot" src="https://github.com/user-attachments/assets/dcb49dd0-aaa2-456c-ad1b-27e71ff4b7c5" />
+
 ---
 
 ## Highlights
