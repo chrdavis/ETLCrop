@@ -2,7 +2,7 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
 	 xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
 
-  <Package Name="ETLCrop" Manufacturer="ETLCrop" Version="1.0.0" UpgradeCode="E93B003F-0AA2-46FC-8E45-06833918A37B" InstallerVersion="500">
+  <Package Name="ETLCrop" Manufacturer="ETLCrop" Version="$(var.Version)" UpgradeCode="E93B003F-0AA2-46FC-8E45-06833918A37B" InstallerVersion="500">
 	<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 	<MediaTemplate EmbedCab="yes" />
 
@@ -12,6 +12,7 @@
 
 	<Feature Id="Main">
 	  <ComponentGroupRef Id="ProductComponents" />
+	  <ComponentGroupRef Id="CliComponents" />
 	  <ComponentRef Id="ProgramMenuShortcut" />
 	</Feature>
 
@@ -45,6 +46,26 @@
 		 so the installed app is self-contained without hand-listing each assembly. -->
 	<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
 	  <Files Include="$(var.ETLCrop.App.TargetDir)**" />
+	</ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+	<!-- Ship the command-line tool (etlcrop.exe) alongside the app. Only the CLI's own
+		 files are listed here; the shared ETLCrop.Core / TraceEvent assemblies are
+		 already installed from the app output above. -->
+	<ComponentGroup Id="CliComponents" Directory="INSTALLFOLDER">
+	  <Component>
+		<File Source="$(var.ETLCrop.Cli.TargetDir)etlcrop.exe" />
+	  </Component>
+	  <Component>
+		<File Source="$(var.ETLCrop.Cli.TargetDir)etlcrop.dll" />
+	  </Component>
+	  <Component>
+		<File Source="$(var.ETLCrop.Cli.TargetDir)etlcrop.runtimeconfig.json" />
+	  </Component>
+	  <Component>
+		<File Source="$(var.ETLCrop.Cli.TargetDir)etlcrop.deps.json" />
+	  </Component>
 	</ComponentGroup>
   </Fragment>
 

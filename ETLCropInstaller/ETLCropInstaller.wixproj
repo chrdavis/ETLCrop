@@ -3,10 +3,14 @@
   <PropertyGroup>
 	<OutputType>Package</OutputType>
 	<InstallerPlatform>x64</InstallerPlatform>
+	<!-- Surface the shared $(Version) from Directory.Build.props to the WiX preprocessor
+		 as $(var.Version) so the MSI package version matches the compiled modules. -->
+	<DefineConstants>Version=$(Version)</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
 	<ProjectReference Include="..\ETLCrop.App\ETLCrop.App.csproj" />
+	<ProjectReference Include="..\ETLCrop.Cli\ETLCrop.Cli.csproj" />
   </ItemGroup>
 
   <ItemGroup>

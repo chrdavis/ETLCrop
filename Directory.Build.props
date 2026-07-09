@@ -1,0 +1,11 @@
+<Project>
+
+  <!-- Single source of truth for the product/assembly version. This applies to every
+	   .NET project in the solution (ETLCrop.App.exe, etlcrop.exe, ETLCrop.Core.dll) and
+	   is also passed to the WiX installer as the "Version" preprocessor constant so the
+	   MSI package version and the compiled module versions never drift apart. -->
+  <PropertyGroup>
+	<Version>1.0.1</Version>
+  </PropertyGroup>
+
+</Project>
